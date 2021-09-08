@@ -1,52 +1,50 @@
 const express = require('express');
 const cors = require('cors');
-// const shortId = require('shortid');
-const {reservations, menu} = require('./data');
+const { birthdays } = require('./data');
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-
 app.set('port', 3001);
 
-app.locals.title = 'Turing Cafe API'
-app.locals.reservations = reservations;
+app.locals.title = 'Turing\'s Birthday Calendar'
+app.locals.birthdays = birthdays;
 
-app.get('/api/v1/reservations', (request, response) => {
-  return response.json(app.locals.reservations)
+app.get('/api/v1/birthdays', (request, response) => {
+  return response.json(app.locals.birthdays)
 });
 
-app.post('/api/v1/reservations', (request, response) => {
-  const { name, date, time, number } = request.body;
+app.post('/api/v1/birthdays', (request, response) => {
+  const { name, month, day } = request.body;
 
-  if (!name || !date || !time || !number ) {
+  if (!name || !month || !day ) {
     return response.status(422).json({
-      error: 'Expected format { name: <String>, date: <String>, time: <String>, number: <Number> }. You are missing a required parameter.'
+      error: 'Expected format { name: <String>, month: <Number>, day: <Number> }. You are missing a required parameter.'
     })
   }
 
-  const newReservation = {id: Date.now(), name, date, time, number};
+  const newBirthday = {id: Date.now(), name, month, day};
 
-  app.locals.reservations = [...app.locals.reservations, newReservation];
+  app.locals.birthdays = [...app.locals.birthdays, newBirthday];
 
-  return response.status(201).json(newReservation);
+  return response.status(201).json(newBirthday);
 });
 
-app.delete('/api/v1/reservations/:id', (request, response) => {
+app.delete('/api/v1/birthdays/:id', (request, response) => {
   const { id } = request.params;
   const parsedId = parseInt(id);
-  const match = app.locals.reservations.find(reservation => parseInt(reservation.id) === parsedId);
+  const match = app.locals.birthdays.find(birthday => parseInt(birthday.id) === parsedId);
 
   if (!match) {
-    return response.status(404).json({ error: `No reservation found with an id of ${id}.` })
+    return response.status(404).json({ error: `No birthday found with an id of ${id}.` })
   }
 
-  const updatedReservations = app.locals.reservations.filter(reservation => parseInt(reservation.id) !== parsedId);
+  const updatedBirthdays = app.locals.birthdays.filter(birthday => parseInt(birthday.id) !== parsedId);
 
-  app.locals.reservations = updatedReservations;
+  app.locals.birthdays = updatedBirthdays;
 
-  return response.status(202).json(app.locals.reservations)
+  return response.status(202).json(app.locals.birthdays)
 });
 
 app.listen(app.get('port'), () => {
