@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { birthdays } = require('./data');
+const { birthdays, months } = require('./data');
 const app = express();
 
 app.use(express.json());
@@ -10,13 +10,19 @@ app.set('port', 3001);
 
 app.locals.title = 'Turing\'s Birthday Calendar'
 app.locals.birthdays = birthdays;
+app.locals.months = months;
+
+app.get('/api/v1/months', (request, response) => {
+  return response.json(app.locals.months)
+});
 
 app.get('/api/v1/birthdays', (request, response) => {
-  return response.json(app.locals.birthdays)
+  return response.status(200).json(app.locals.birthdays)
 });
 
 app.post('/api/v1/birthdays', (request, response) => {
   const { name, month, day } = request.body;
+  console.log(request.body);
 
   if (!name || !month || !day ) {
     return response.status(422).json({
