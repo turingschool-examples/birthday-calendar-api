@@ -24,7 +24,7 @@ This app is the back-end server for the Mod 3 FE mid-mod. It is tested with jest
 | url | verb | options | sample response |
 | ----|------|---------|---------------- |
 | `http://localhost:3001/api/v1/birthdays` | GET | not needed | Array of all existing birthdays: `[{ id: 18907224, name: 'Christie', month: 10, day: 23 }]` |
-| `http://localhost:3001/api/v1/birthdays` | POST | `{name: <String>, month: <Number>, day: <Number>}` | New birthday: `{ id: 18939837, name: 'Kayla', month: 5, day: 15 }` |
+| `http://localhost:3001/api/v1/birthdays` | POST | `headers: { 'Content-Type': 'application/json' }, body: {name: <String>, month: <Number>, day: <Number>}` | New birthday: `{ id: 18939837, name: 'Kayla', month: 5, day: 15 }` |
 | `http://localhost:3001/api/v1/birthdays/:id` | DELETE | not needed | Array of all remaining birthdays: `[{ id: 18907224, name: 'Christie', month: 10, day: 23 }]` |
 | `http://localhost:3001/api/v1/months` | GET | not needed | Array of all months: `[{ id: 1, name: 'January'}, {id: 2, name: 'February'},...]` |
 
