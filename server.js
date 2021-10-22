@@ -50,7 +50,7 @@ app.delete('/api/v1/birthdays/:id', (request, response) => {
 
   app.locals.birthdays = updatedBirthdays;
 
-  return response.status(202).json(app.locals.birthdays)
+  return response.status(200).json(match)
 });
 
 app.listen(app.get('port'), () => {
